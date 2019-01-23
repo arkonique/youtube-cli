@@ -65,11 +65,12 @@ After displaying the results, you will get a console.
 	> v:5
 	```
 
-- Press d followed by `:` and a range (beginning-end) from the displayed list to download the videos using youtube-dl
+- Press d followed by `:` and a range (beginning-end) or a single number from the displayed list to download the videos using youtube-dl
 	eg:
 
 	```bash
 	> d:3-5
+	> d:4
 	```
 
 - Press q to quit
