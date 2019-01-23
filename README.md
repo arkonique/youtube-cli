@@ -77,4 +77,4 @@ After displaying the results, you will get a console.
 
 ## Todo
 
-[ ] Add `n` feature to the console to view the next set of results
+- [ ] Add `n` feature to the console to view the next set of results
