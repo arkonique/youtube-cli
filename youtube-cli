@@ -1,0 +1,76 @@
+#!/usr/bin/env python
+
+from pyvirtualdisplay import Display
+from selenium import webdriver
+import time
+import argparse
+import re
+import subprocess
+
+
+class bcolors:
+    OKBLUE = '\033[94m'
+    OKGREEN = '\033[92m'
+    FAIL = '\033[91m'
+    ENDC = '\033[0m'
+    BOLD = '\033[1m'
+
+pattern1=re.compile("v:[0-9]");
+pattern2=re.compile("d:[0-9](-[0-9])?$")
+
+parser = argparse.ArgumentParser()
+parser.add_argument("query", help="enter the youtube search query here")
+args = parser.parse_args()
+query=args.query
+
+display = Display(visible=0, size=(800, 600))
+display.start()
+
+driver = webdriver.Chrome()  # Optional argument, if not specified will search path.
+driver.get('https://youtube.com');
+search_box = driver.find_element_by_name('search_query')
+search_box.send_keys(query)
+search_box.submit()
+
+i=1
+page = driver.find_elements_by_css_selector("ytd-video-renderer.ytd-item-section-renderer")
+link_list=[];
+for video in page:
+	a1=video.find_element_by_id('thumbnail').get_attribute('href')
+	a2=video.find_element_by_id('video-title').text
+	a3=video.find_elements_by_css_selector('yt-formatted-string[has-link-only_]:not([force-default-style]) a.yt-simple-endpoint.yt-formatted-string')[0].text
+	a4=video.find_elements_by_css_selector('#metadata-line.ytd-video-meta-block span.ytd-video-meta-block')[0].text
+	a5=video.find_elements_by_css_selector('#metadata-line.ytd-video-meta-block span.ytd-video-meta-block')[1].text
+	a6=video.find_elements_by_css_selector('#description-text.ytd-video-renderer')[0].text
+	#ink=video.get_attribute('innerHTML')
+	print i,a2
+	print a3+"    "+a4+"    "+a5
+	print a1
+	print a6
+	print
+	i+=1
+	link_list.append(a1)
+
+
+driver.quit()
+display.stop()
+
+print bcolors.BOLD+bcolors.OKGREEN+"Available options- v: open video in VLC media player, d: download video by number, q: quit"+bcolors.ENDC
+print bcolors.BOLD+bcolors.OKBLUE+"Usage - option:number    or    option:beginning-end"+bcolors.ENDC
+print
+entry="y"
+while entry!="q":
+	entry=raw_input(">")
+	if pattern1.match(entry):
+		link=entry.split(":")[1]
+		bashCommand="vlc "+link_list[int(link)]
+		pass
+	elif pattern2.match(entry):
+		nums=entry.split(":")[1]
+		b=int(nums.split("-")[0])
+		e=int(nums.split("-")[1])
+		bashCommand="youtube-dl "+" ".join(link_list[b:e])
+	#process = subprocess.Popen(bashCommand.split(), stdout=subprocess.PIPE)
+	#output, error = process.communicate()
+	print bashCommand
+	pass

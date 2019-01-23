@@ -1,0 +1,8 @@
+1548176614448	geckodriver	INFO	geckodriver 0.20.1
+1548176614453	geckodriver	INFO	Listening on 127.0.0.1:60719
+1548176615506	mozrunner::runner	INFO	Running command: "/usr/bin/firefox" "-marionette" "-profile" "/tmp/rust_mozprofile.qoGKPUkmLBR4"
+Running Firefox as root in a regular user's session is not supported.  ($HOME is /home/arkonique which is owned by arkonique.)
+1548176690041	geckodriver	INFO	geckodriver 0.20.1
+1548176690060	geckodriver	INFO	Listening on 127.0.0.1:58613
+1548176691050	mozrunner::runner	INFO	Running command: "/usr/bin/firefox" "-marionette" "-profile" "/tmp/rust_mozprofile.G85EggGGzRCQ"
+Running Firefox as root in a regular user's session is not supported.  ($HOME is /home/arkonique which is owned by arkonique.)
