@@ -15,14 +15,15 @@ class bcolors:
     ENDC = '\033[0m'
     BOLD = '\033[1m'
 
-pattern1=re.compile("v:[0-9]");
-pattern2=re.compile("d:[0-9](-[0-9])?$")
+pattern1=re.compile("v:[0-9]$");
+pattern2=re.compile("d:[0-9]$")
+pattern3=re.compile("d:[0-9]-[0-9]$")
 
 parser = argparse.ArgumentParser()
 parser.add_argument("query", help="enter the youtube search query here")
 args = parser.parse_args()
 query=args.query
-
+print "Searching...."
 display = Display(visible=0, size=(800, 600))
 display.start()
 
@@ -59,18 +60,23 @@ print bcolors.BOLD+bcolors.OKGREEN+"Available options- v: open video in VLC medi
 print bcolors.BOLD+bcolors.OKBLUE+"Usage - option:number    or    option:beginning-end"+bcolors.ENDC
 print
 entry="y"
+bashCommand=""
 while entry!="q":
-	entry=raw_input(">")
+	entry=raw_input("> ")
 	if pattern1.match(entry):
-		link=entry.split(":")[1]
-		bashCommand="vlc "+link_list[int(link)]
+		link=int(entry.split(":")[1])-1
+		bashCommand="vlc "+link_list[link]
 		pass
 	elif pattern2.match(entry):
+		nums=int(entry.split(":")[1])-1
+		bashCommand="youtube-dl "+link_list[nums]
+	elif pattern3.match(entry):
 		nums=entry.split(":")[1]
-		b=int(nums.split("-")[0])
+		b=int(nums.split("-")[0])-1
 		e=int(nums.split("-")[1])
 		bashCommand="youtube-dl "+" ".join(link_list[b:e])
 	#process = subprocess.Popen(bashCommand.split(), stdout=subprocess.PIPE)
 	#output, error = process.communicate()
-	print bashCommand
+	if entry!="q":
+		print bashCommand
 	pass
